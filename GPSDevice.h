@@ -4,13 +4,10 @@
 #include "GPSCommon.h"
 
 // Choose two Arduino pins to use for software serial
-int RXPin = 2;
-int TXPin = 3;
+#define RXPin 2
+#define TXPin 3
 
-int GPSBaud = 9600;
-
-// Create a TinyGPS++ object
-TinyGPSPlus gps;
+#define GPSBaud 9600
 
 // Create a software serial port called "gpsSerial"
 SoftwareSerial gpsSerial(RXPin, TXPin);
@@ -18,6 +15,7 @@ SoftwareSerial gpsSerial(RXPin, TXPin);
 
 class GPSDevice {
 private:
+  TinyGPSPlus gps;
   GPSTime time;
   uint8_t last_second = 0;
   bool time_changed = false;
