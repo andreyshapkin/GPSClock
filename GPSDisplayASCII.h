@@ -12,19 +12,20 @@ typedef SSD1306AsciiAvrI2c GPSDisplay;
 //#define I2C_ADDRESS 0x3c
 
 class GPSDisplayContainer {
-private:
-  GPSDisplay display;
-public:
-  GPSDisplayContainer() {}
-  
-  void setup(uint32_t i2c_addr) {
-    //display.begin(&Adafruit128x64, i2c_addr);
-    display.begin(&SH1106_128x64, i2c_addr);
-    display.setI2cClock(I2C_FREQ);
-    display.clear();    
-  }
+  private:
+    GPSDisplay display;
+  public:
+    GPSDisplayContainer() {}
 
-  GPSDisplay& get_display() {
-    return display;
-  }
+    void setup(uint32_t i2c_addr) {
+      // this option is for ssd1304 based displays
+      //display.begin(&Adafruit128x64, i2c_addr);
+      display.begin(&SH1106_128x64, i2c_addr);
+      display.setI2cClock(I2C_FREQ);
+      display.clear();
+    }
+
+    GPSDisplay& get_display() {
+      return display;
+    }
 };

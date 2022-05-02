@@ -12,16 +12,16 @@ char __time_str[60];
 
 class GPSTime {
   public:
-    uint16_t year=0;
-    uint8_t month=0;
-    uint8_t day=0;
-    uint8_t hour=0;
-    uint8_t minute=0;
-    uint8_t second=0;
-    uint8_t weekday=0;
+    uint16_t year = 0;
+    uint8_t month = 0;
+    uint8_t day = 0;
+    uint8_t hour = 0;
+    uint8_t minute = 0;
+    uint8_t second = 0;
+    uint8_t weekday = 0;
 
     char* str() {
-      sprintf(__time_str,"%02d:%02d:%02d %02d/%02d/%04d (%d)", hour, minute, second, month, day, year, weekday);
+      sprintf(__time_str, "%02d:%02d:%02d %02d/%02d/%04d (%d)", hour, minute, second, month, day, year, weekday);
       return __time_str;
     }
 

@@ -27,8 +27,8 @@ GPSTime& getLocalTime(Timezone& tz, GPSTime& utc_time)
   TimeChangeRule *tcr; // pointer to the time change rule, use to get the TZ abbrev
   time_t utc_time_t = convert_to_unix_time(utc_time.year, utc_time.month, utc_time.day, utc_time.hour, utc_time.minute, utc_time.second);
   time_t local_time_t = tz.toLocal(utc_time_t, &tcr);
-  
-  localTime.set_date(year(local_time_t),month(local_time_t), day(local_time_t), weekday(local_time_t));
+
+  localTime.set_date(year(local_time_t), month(local_time_t), day(local_time_t), weekday(local_time_t));
   localTime.set_time(hour(local_time_t), minute(local_time_t), second(local_time_t));
 
   return localTime;
@@ -41,7 +41,7 @@ uint16_t getWorkWeek(GPSTime& time) {
   uint16_t t_days = time.day; // 1-31
   uint16_t t_weekday = time.weekday; // 1(Sun)-7(Sat)
 
-  int days_month_start[]={0,31,59,90,120,151,181,212,243,273,304,334};    // Number of days at the beginning of the month in a not leap year.
+  int days_month_start[] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334}; // Number of days at the beginning of the month in a not leap year.
   uint16_t days_in_year = 0;
   uint16_t week = 0;
 
@@ -58,7 +58,7 @@ uint16_t getWorkWeek(GPSTime& time) {
     number_of_weeks_in_year ++;
   }
   if (remain_days > t_weekday) {
-    number_of_weeks_in_year ++;    
+    number_of_weeks_in_year ++;
   }
   // if last week of calendar is not full, ww01 starts on the same week
   if (number_of_weeks_in_year == 53) {
@@ -68,7 +68,7 @@ uint16_t getWorkWeek(GPSTime& time) {
       number_of_weeks_in_year = 1;
     }
   }
-  return number_of_weeks_in_year;  
+  return number_of_weeks_in_year;
 }
 
 // testing work of the week
@@ -78,7 +78,7 @@ uint16_t getWorkWeek(GPSTime& time) {
 //
 //  tt.set_date(y, m, d, wd);
 //  sprintf(get_buf(),"DDD: %s ww%02d", tt.str(), getWorkWeek(tt));
-//  Serial.println(get_buf());  
+//  Serial.println(get_buf());
 //}
 //  test_date(2022, 1, 1, 7);
 //  test_date(2022, 1, 2, 1);
