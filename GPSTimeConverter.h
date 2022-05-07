@@ -30,6 +30,10 @@ GPSTime& getLocalTime(Timezone& tz, GPSTime& utc_time)
 
   localTime.set_date(year(local_time_t), month(local_time_t), day(local_time_t), weekday(local_time_t));
   localTime.set_time(hour(local_time_t), minute(local_time_t), second(local_time_t));
+//  sprintf(get_buf(), "UTC: %s", utc_time.str());
+//  Serial.println(get_buf());
+//  sprintf(get_buf(), "PDX: %s", localTime.str());
+//  Serial.println(get_buf());
 
   return localTime;
 }
@@ -51,13 +55,20 @@ uint16_t getWorkWeek(GPSTime& time) {
     days_in_year ++;
   }
 
-  uint16_t number_of_weeks_in_year = days_in_year / 7;
-  uint16_t remain_days = days_in_year % 7;
+  uint16_t number_of_days_in_year_until_this_week = (days_in_year >= t_weekday) ? days_in_year - t_weekday : 0;
+  
+  uint16_t number_of_weeks_in_year = number_of_days_in_year_until_this_week / 7;
+  uint16_t remain_days = number_of_days_in_year_until_this_week % 7;
 
+  //sprintf(get_buf(), "DDD: %d %d %d %d %d %s",  days_in_year, number_of_days_in_year_until_this_week, number_of_weeks_in_year, remain_days, t_weekday, time.str());
+  //Serial.println(get_buf());
+
+  // year started mid-week
   if (remain_days) {
     number_of_weeks_in_year ++;
   }
-  if (remain_days > t_weekday) {
+  // we are in mid-week
+  if (t_weekday) {
     number_of_weeks_in_year ++;
   }
   // if last week of calendar is not full, ww01 starts on the same week
@@ -71,25 +82,38 @@ uint16_t getWorkWeek(GPSTime& time) {
   return number_of_weeks_in_year;
 }
 
-// testing work of the week
-//void test_date(uint16_t y, uint16_t m, uint16_t d, uint16_t wd) {
+//enum days {Sun=1, Mon, Tue, Wed, Thu, Fri, Sat};
+
+//void test_date(uint16_t y, uint16_t m, uint16_t d, uint16_t wd, uint16_t expect) {
 //  GPSTime tt;
 //  tt.set_time(10,11,12);
 //
 //  tt.set_date(y, m, d, wd);
-//  sprintf(get_buf(),"DDD: %s ww%02d", tt.str(), getWorkWeek(tt));
+//  uint16_t ww = getWorkWeek(tt);
+//  sprintf(get_buf(),"DDD: %s ww%02d exp: ww%02d %s", tt.str(), ww, expect, ((ww==expect) ? "PASS" : "!!!FAIL!!!"));
 //  Serial.println(get_buf());
 //}
-//  test_date(2022, 1, 1, 7);
-//  test_date(2022, 1, 2, 1);
-//  test_date(2022, 04, 25, 2);
-//  test_date(2022, 04, 24, 1);
-//  test_date(2022, 04, 23, 7);
-//  test_date(2022, 12, 26, 2);
-//  test_date(2023, 1, 2, 2);
-//  test_date(2023, 4, 10, 2);
-//  test_date(2023, 12, 30, 7);
-//  test_date(2021, 12, 27, 2);
+//
+//void test_ww() {
+//  Serial.begin(9600);
+//  test_date(2022, 5, 5, Thu, 19);
+//  test_date(2022, 5, 6, Fri, 19);
+//  test_date(2022, 1, 2, Sun, 2);
+//  test_date(2022, 1, 1, Sat, 1);
+//  test_date(2022, 04, 25, Mon, 18);
+//  test_date(2022, 04, 24, Sun, 18);
+//  test_date(2022, 04, 23, Sat, 17);
+//  test_date(2022, 04, 22, Fri, 17);
+//  test_date(2022, 12, 26, Mon, 53);
+//
+//  test_date(2023, 1, 2, Mon, 1);
+//  test_date(2023, 4, 10, Mon, 15);
+//  test_date(2023, 12, 30, Sat, 52);
+//
+//  test_date(2021, 12, 27, Mon, 1);
+//  test_date(2021, 12, 26, Sun, 1);
+//  test_date(2021, 12, 31, Fri, 1);
+//}
 
 // US Pacific Time Zone (Portland)
 TimeChangeRule usPDT = {"PDT", Second, Sun, Mar, 2, -420};
